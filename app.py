@@ -7,16 +7,16 @@ from flask import Flask, jsonify, request
 
 colorama.init()
 
-with open("intents.json") as file:
+with open("./intents.json") as file:
     data = json.load(file)
 
 def chat(inp):
     model = keras.models.load_model('chat_model')
 
-    with open('tokenizer.pickle', 'rb') as handle:
+    with open('./tokenizer.pickle', 'rb') as handle:
         tokenizer = pickle.load(handle)
 
-    with open('label_encoder.pickle', 'rb') as enc:
+    with open('./label_encoder.pickle', 'rb') as enc:
         lbl_encoder = pickle.load(enc)
 
     max_len = 20
@@ -35,7 +35,6 @@ app = Flask(__name__)
 @app.route("/bot", methods=["POST"])
 def response():
     query = dict(request.form)['query']
-    # res = query
     res = chat(query)
     return jsonify({"response" : res})
 if __name__=="__main__":
