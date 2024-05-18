@@ -1,4 +1,5 @@
 import json
+import re
 import colorama
 import pickle
 import numpy as np
@@ -9,6 +10,9 @@ colorama.init()
 
 with open("./intents.json") as file:
     data = json.load(file)
+
+def chatGen(inp):
+    return "Hello! How can I help you today?"
 
 def chat(inp):
     model = keras.models.load_model('chat_model')
@@ -35,7 +39,8 @@ app = Flask(__name__)
 @app.route("/bot", methods=["POST"])
 def response():
     query = dict(request.form)['query']
-    res = chat(query)
+    # res = chat(query)
+    res = chatGen(query)
     return jsonify({"response" : res})
 if __name__=="__main__":
     app.run(host="0.0.0.0",)
